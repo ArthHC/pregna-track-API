@@ -10,7 +10,7 @@ datasource db {
 model Doctor {
   id              Int            @id @default(autoincrement())
   name            String         @db.VarChar(45)
-  surname         String         @db.VarChar(255)
+  surname         String?        @db.VarChar(255)
   email           String         @db.VarChar(320)
   password        String         @db.VarChar(255)
   patients        Patient[]
