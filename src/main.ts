@@ -6,17 +6,14 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // Configuração global de validação
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
     whitelist: true,
     forbidNonWhitelisted: true,
   }));
   
-  // Configuração CORS
   app.enableCors();
   
-  // Configuração do Swagger
   const config = new DocumentBuilder()
     .setTitle('PregnaTrack API')
     .setVersion('1.0.0')
