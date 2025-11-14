@@ -18,13 +18,22 @@ export class DoctorsController {
   @ApiBody({
     type: CreateDoctorDto,
     examples: {
-      doctor: {
+      complete: {
         summary: 'Médico completo',
         description: 'Exemplo com todos os campos',
         value: {
           name: 'Dr. João',
           surname: 'Silva',
           email: 'joao.silva@email.com',
+          password: '123456789'
+        }
+      },
+      minimal: {
+        summary: 'Médico básico',
+        description: 'Exemplo apenas com campos obrigatórios',
+        value: {
+          name: 'Dr. Carlos',
+          email: 'carlos@email.com',
           password: '123456789'
         }
       }

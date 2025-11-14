@@ -19,11 +19,11 @@ model Doctor {
 
 model Patient {
   id                      Int       @id @default(autoincrement())
-  name                    String    @db.VarChar(45)
-  surname                 String?   @db.VarChar(255)
+  name                    String    @db.VarChar(255)
   dateOfBirth             DateTime?
   phoneNumber             String?   @db.VarChar(20)
   color                   String?   @db.VarChar(7)
+  babyName                String?   @db.VarChar(255)
   EDD                     DateTime
   assistanceDaysBeforeEDD Int
   assistanceDaysAfterEDD  Int

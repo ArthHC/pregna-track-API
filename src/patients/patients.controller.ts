@@ -15,7 +15,7 @@ export class PatientsController {
 
   @ApiOperation({
     summary: 'Criar nova paciente',
-    description: 'Cadastra uma nova paciente no sistema. Campos opcionais: surname, dateOfBirth, color, parity, observation.'
+    description: 'Cadastra uma nova paciente no sistema. Campos opcionais: babyName, dateOfBirth, color, parity, observation.'
   })
   @ApiBody({
     type: CreatePatientDto,
@@ -25,7 +25,7 @@ export class PatientsController {
         description: 'Exemplo com todos os campos preenchidos',
         value: {
           name: 'Maria',
-          surname: 'Santos',
+          babyName: 'Pedro',
           dateOfBirth: '1990-05-15',
           color: 'FF5733',
           EDD: '2025-06-01',
@@ -55,7 +55,7 @@ export class PatientsController {
     example: {
       id: 1,
       name: 'Maria',
-      surname: 'Santos',
+      babyName: 'Pedro',
       dateOfBirth: '1990-05-15T00:00:00.000Z',
       EDD: '2025-06-01T00:00:00.000Z',
       assistanceDaysBeforeEDD: 30,
@@ -93,7 +93,7 @@ export class PatientsController {
     example: [{
       id: 1,
       name: 'Maria',
-      surname: 'Santos',
+      babyName: 'Pedro',
       EDD: '2025-06-01T00:00:00.000Z',
       assistanceDaysBeforeEDD: 30,
       assistanceDaysAfterEDD: 15,
@@ -124,7 +124,7 @@ export class PatientsController {
     example: {
       id: 1,
       name: 'Maria',
-      surname: 'Santos',
+      babyName: 'Pedro',
       dateOfBirth: '1990-05-15T00:00:00.000Z',
       EDD: '2025-06-01T00:00:00.000Z',
       assistanceDaysBeforeEDD: 30,
@@ -205,7 +205,7 @@ export class PatientsController {
     example: {
       id: 1,
       name: 'Maria',
-      surname: 'Santos'
+      babyName: 'Pedro'
     }
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })

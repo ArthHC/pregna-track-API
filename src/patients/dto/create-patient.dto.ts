@@ -5,22 +5,22 @@ export class CreatePatientDto {
   @ApiProperty({
     description: 'Nome da paciente',
     example: 'Maria',
-    maxLength: 45
+    maxLength: 255
   })
   @IsNotEmpty()
   @IsString()
-  @MaxLength(45)
+  @MaxLength(255)
   name: string;
 
   @ApiPropertyOptional({
-    description: 'Sobrenome da paciente (opcional)',
-    example: 'Santos',
+    description: 'Nome do bebê (opcional)',
+    example: 'Pedro',
     maxLength: 255
   })
   @IsOptional()
   @IsString()
   @MaxLength(255)
-  surname?: string;
+  babyName?: string;
 
   @ApiPropertyOptional({
     description: 'Data de nascimento da paciente (opcional)',

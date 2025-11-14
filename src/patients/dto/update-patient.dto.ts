@@ -7,22 +7,22 @@ export class UpdatePatientDto extends PartialType(CreatePatientDto) {
   @ApiPropertyOptional({
     description: 'Nome da paciente (opcional para atualização)',
     example: 'Maria Silva',
-    maxLength: 45
-  })
-  @IsOptional()
-  @IsString()
-  @MaxLength(45)
-  name?: string;
-
-  @ApiPropertyOptional({
-    description: 'Sobrenome da paciente (opcional para atualização)',
-    example: 'Santos',
     maxLength: 255
   })
   @IsOptional()
   @IsString()
   @MaxLength(255)
-  surname?: string;
+  name?: string;
+
+  @ApiPropertyOptional({
+    description: 'Nome do bebê (opcional para atualização)',
+    example: 'Pedro',
+    maxLength: 255
+  })
+  @IsOptional()
+  @IsString()
+  @MaxLength(255)
+  babyName?: string;
 
   @ApiPropertyOptional({
     description: 'Data de nascimento da paciente (opcional para atualização)',

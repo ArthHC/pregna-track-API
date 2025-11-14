@@ -1,5 +1,5 @@
-import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateDoctorDto {
   @ApiProperty({
@@ -12,15 +12,15 @@ export class CreateDoctorDto {
   @MaxLength(45)
   name: string;
 
-  @ApiProperty({
-    description: 'Sobrenome do médico',
+  @ApiPropertyOptional({
+    description: 'Sobrenome do médico (opcional)',
     example: 'Silva',
     maxLength: 255
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MaxLength(255)
-  surname: string;
+  surname?: string;
 
   @ApiProperty({
     description: 'Email único do médico',
