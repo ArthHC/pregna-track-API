@@ -21,7 +21,7 @@ export class PatientsService {
     }
 
     if (!createData.pregnancyStatus) {
-      createData.pregnancyStatus = 'Ativa';
+      createData.pregnancyStatus = 'Em acompanhamento';
     }
     createData.EDD = new Date(EDD);
     
