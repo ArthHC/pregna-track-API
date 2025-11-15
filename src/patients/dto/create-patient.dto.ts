@@ -68,7 +68,6 @@ export class CreatePatientDto {
   })
   @IsNotEmpty()
   @IsInt()
-  @Min(0)
   assistanceDaysBeforeEDD: number;
 
   @ApiProperty({
@@ -78,7 +77,6 @@ export class CreatePatientDto {
   })
   @IsNotEmpty()
   @IsInt()
-  @Min(0)
   assistanceDaysAfterEDD: number;
 
   @ApiPropertyOptional({

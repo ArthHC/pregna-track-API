@@ -69,7 +69,6 @@ export class UpdatePatientDto extends PartialType(CreatePatientDto) {
   })
   @IsOptional()
   @IsInt()
-  @Min(0)
   assistanceDaysBeforeEDD?: number;
 
   @ApiPropertyOptional({
@@ -79,7 +78,6 @@ export class UpdatePatientDto extends PartialType(CreatePatientDto) {
   })
   @IsOptional()
   @IsInt()
-  @Min(0)
   assistanceDaysAfterEDD?: number;
 
   @ApiPropertyOptional({
