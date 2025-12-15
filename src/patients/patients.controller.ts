@@ -15,7 +15,7 @@ export class PatientsController {
 
   @ApiOperation({
     summary: 'Criar nova paciente',
-    description: 'Cadastra uma nova paciente no sistema. Campos opcionais: babyName, dateOfBirth, color, parity, observation.'
+    description: 'Cadastra uma nova paciente no sistema. Apenas dados básicos da paciente.'
   })
   @ApiBody({
     type: CreatePatientDto,
@@ -24,27 +24,19 @@ export class PatientsController {
         summary: 'Paciente completa',
         description: 'Exemplo com todos os campos preenchidos',
         value: {
-          name: 'Maria',
-          babyName: 'Pedro',
-          dateOfBirth: '1990-05-15',
-          color: 'FF5733',
-          EDD: '2025-06-01',
-          assistanceDaysBeforeEDD: 30,
-          assistanceDaysAfterEDD: 15,
-          parity: 'G1P0',
-          observation: 'Primeira gestação',
-          doctorId: 1
+          doctor_id: 1,
+          name: 'Maria Santos',
+          date_of_birth: '1990-05-15',
+          phone_number: '11999888777',
+          badge_color: '#FF5733'
         }
       },
       minimal: {
-        summary: 'Paciente mínima',
+        summary: 'Paciente básica',
         description: 'Exemplo com apenas campos obrigatórios',
         value: {
-          name: 'Ana',
-          EDD: '2025-07-15',
-          assistanceDaysBeforeEDD: 20,
-          assistanceDaysAfterEDD: 10,
-          doctorId: 1
+          doctor_id: 1,
+          name: 'Ana Silva'
         }
       }
     }
@@ -54,24 +46,22 @@ export class PatientsController {
     description: 'Paciente criada com sucesso',
     example: {
       id: 1,
-      name: 'Maria',
-      babyName: 'Pedro',
-      dateOfBirth: '1990-05-15T00:00:00.000Z',
-      EDD: '2025-06-01T00:00:00.000Z',
-      assistanceDaysBeforeEDD: 30,
-      assistanceDaysAfterEDD: 15,
-      parity: 'G1P0',
-      observation: 'Primeira gestação',
-      doctorId: 1,
+      doctor_id: 1,
+      name: 'Maria Santos',
+      date_of_birth: '1990-05-15T00:00:00.000Z',
+      phone_number: '11999888777',
+      badge_color: '#FF5733',
       doctor: {
         id: 1,
         name: 'Dr. João',
         email: 'joao@email.com'
-      }
+      },
+      pregnancies: [],
+      parities: []
     }
   })
-  @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
+  @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @Post()
   create(@Body() createPatientDto: CreatePatientDto) {
     return this.patientsService.create(createPatientDto);
@@ -79,12 +69,12 @@ export class PatientsController {
 
   @ApiOperation({
     summary: 'Listar pacientes',
-    description: 'Lista todas as pacientes ou filtra por médico usando o query parameter doctorId'
+    description: 'Lista todas as pacientes ou filtra por médico específico'
   })
   @ApiQuery({
     name: 'doctorId',
-    description: 'ID do médico para filtrar pacientes',
     required: false,
+    description: 'ID do médico para filtrar pacientes',
     example: 1
   })
   @ApiResponse({
@@ -92,30 +82,31 @@ export class PatientsController {
     description: 'Lista de pacientes',
     example: [{
       id: 1,
-      name: 'Maria',
-      babyName: 'Pedro',
-      EDD: '2025-06-01T00:00:00.000Z',
-      assistanceDaysBeforeEDD: 30,
-      assistanceDaysAfterEDD: 15,
-      doctorId: 1,
+      doctor_id: 1,
+      name: 'Maria Santos',
+      date_of_birth: '1990-05-15T00:00:00.000Z',
+      phone_number: '11999888777',
+      badge_color: '#FF5733',
       doctor: {
         id: 1,
         name: 'Dr. João'
-      }
+      },
+      pregnancies: [],
+      parities: []
     }]
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @Get()
   findAll(@Query('doctorId') doctorId?: string) {
     if (doctorId) {
-      return this.patientsService.findByDoctor(parseInt(doctorId));
+      return this.patientsService.findByDoctorId(+doctorId);
     }
     return this.patientsService.findAll();
   }
 
   @ApiOperation({
     summary: 'Buscar paciente por ID',
-    description: 'Retorna uma paciente específica com informações do médico responsável'
+    description: 'Retorna dados completos de uma paciente específica incluindo gestações e paridades'
   })
   @ApiParam({ name: 'id', description: 'ID da paciente', example: 1 })
   @ApiResponse({
@@ -123,20 +114,33 @@ export class PatientsController {
     description: 'Paciente encontrada',
     example: {
       id: 1,
-      name: 'Maria',
-      babyName: 'Pedro',
-      dateOfBirth: '1990-05-15T00:00:00.000Z',
-      EDD: '2025-06-01T00:00:00.000Z',
-      assistanceDaysBeforeEDD: 30,
-      assistanceDaysAfterEDD: 15,
-      parity: 'G1P0',
-      observation: 'Primeira gestação',
-      doctorId: 1,
+      doctor_id: 1,
+      name: 'Maria Santos',
+      date_of_birth: '1990-05-15T00:00:00.000Z',
+      phone_number: '11999888777',
+      badge_color: '#FF5733',
       doctor: {
         id: 1,
         name: 'Dr. João',
         email: 'joao@email.com'
-      }
+      },
+      pregnancies: [
+        {
+          id: 1,
+          baby_name: 'Pedro',
+          edd: '2025-06-01T00:00:00.000Z',
+          status: 'Em acompanhamento'
+        }
+      ],
+      parities: [
+        {
+          id: 1,
+          gestations: 1,
+          births_vaginal: 0,
+          births_cesarean: 0,
+          abortions: 0
+        }
+      ]
     }
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
@@ -148,44 +152,12 @@ export class PatientsController {
 
   @ApiOperation({
     summary: 'Atualizar paciente',
-    description: 'Atualiza dados de uma paciente. Todos os campos são opcionais na atualização.'
+    description: 'Atualiza dados básicos de uma paciente (não inclui dados de gestação ou paridade)'
   })
   @ApiParam({ name: 'id', description: 'ID da paciente', example: 1 })
-  @ApiBody({
-    type: UpdatePatientDto,
-    examples: {
-      edd_update: {
-        summary: 'Atualizar EDD',
-        description: 'Exemplo atualizando data prevista de parto',
-        value: {
-          EDD: '2025-08-01',
-          observation: 'Data atualizada após ultrassom'
-        }
-      },
-      partial: {
-        summary: 'Atualização parcial',
-        description: 'Exemplo atualizando alguns campos',
-        value: {
-          name: 'Maria Silva',
-          assistanceDaysBeforeEDD: 35,
-          observation: 'Acompanhamento intensivo'
-        }
-      }
-    }
-  })
   @ApiResponse({
     status: 200,
-    description: 'Paciente atualizada com sucesso',
-    example: {
-      id: 1,
-      name: 'Maria Silva',
-      EDD: '2025-08-01T00:00:00.000Z',
-      observation: 'Data atualizada após ultrassom',
-      doctor: {
-        id: 1,
-        name: 'Dr. João'
-      }
-    }
+    description: 'Paciente atualizada com sucesso'
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @ApiResponse({ status: 404, description: 'Paciente não encontrada' })
@@ -196,17 +168,12 @@ export class PatientsController {
 
   @ApiOperation({
     summary: 'Deletar paciente',
-    description: 'Remove uma paciente do sistema permanentemente'
+    description: 'Remove uma paciente do sistema (cascade: remove gestações e paridades associadas)'
   })
   @ApiParam({ name: 'id', description: 'ID da paciente', example: 1 })
   @ApiResponse({
     status: 200,
-    description: 'Paciente deletada com sucesso',
-    example: {
-      id: 1,
-      name: 'Maria',
-      babyName: 'Pedro'
-    }
+    description: 'Paciente deletada com sucesso'
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @ApiResponse({ status: 404, description: 'Paciente não encontrada' })
