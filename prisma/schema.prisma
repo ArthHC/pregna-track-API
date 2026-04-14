@@ -10,29 +10,46 @@ datasource db {
 model Doctor {
   id              Int            @id @default(autoincrement())
   name            String         @db.VarChar(45)
-  surname         String         @db.VarChar(255)
-  email           String         @db.VarChar(320)
+  surname         String?        @db.VarChar(255)
+  email           String         @unique @db.VarChar(320)
   password        String         @db.VarChar(255)
   patients        Patient[]
   notifications   Notification[]
 }
 
 model Patient {
-  id                      Int       @id @default(autoincrement())
-  name                    String    @db.VarChar(45)
-  surname                 String?   @db.VarChar(255)
-  dateOfBirth             DateTime?
-  phoneNumber             String?   @db.VarChar(20)
-  color                   String?   @db.VarChar(7)
-  EDD                     DateTime
-  assistanceDaysBeforeEDD Int
-  assistanceDaysAfterEDD  Int
-  parity                  String?   @db.VarChar(12)
-  babyBirthDate           DateTime?
-  pregnancyStatus         String?   @db.VarChar(20)
-  observation             String?   @db.Text
-  doctorId                Int
-  doctor                  Doctor    @relation(fields: [doctorId], references: [id])
+  id            Int         @id @default(autoincrement())
+  doctor_id     Int
+  name          String      @db.VarChar(255)
+  date_of_birth DateTime?
+  phone_number  String?     @db.VarChar(20)
+  badge_color   String?     @db.VarChar(7)
+  doctor        Doctor      @relation(fields: [doctor_id], references: [id])
+  pregnancies   Pregnancy[]
+  parities      Parity[]
+}
+
+model Pregnancy {
+  id                          Int       @id @default(autoincrement())
+  patient_id                  Int
+  baby_name                   String?   @db.VarChar(255)
+  edd                         DateTime
+  status                      String?   @default("Em acompanhamento")
+  assistance_days_before_edd  Int
+  assistance_days_after_edd   Int
+  baby_birth_date             DateTime?
+  observation                 String?   @db.Text
+  patient                     Patient   @relation(fields: [patient_id], references: [id])
+}
+
+model Parity {
+  id           Int     @id @default(autoincrement())
+  patient_id   Int
+  gestations   Int?
+  births_vaginal Int?
+  births_cesarean Int?
+  abortions    Int?
+  patient      Patient @relation(fields: [patient_id], references: [id])
 }
 
 model Notification {

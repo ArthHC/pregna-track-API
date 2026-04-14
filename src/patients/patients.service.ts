@@ -8,27 +8,20 @@ export class PatientsService {
   constructor(private prisma: PrismaService) {}
 
   async create(createPatientDto: CreatePatientDto) {
-    const { dateOfBirth, EDD, babyBirthDate, pregnancyStatus, ...rest } = createPatientDto;
+    const { date_of_birth, ...rest } = createPatientDto;
     
     const createData: any = { ...rest };
     
-    if (dateOfBirth) {
-      createData.dateOfBirth = new Date(dateOfBirth);
+    if (date_of_birth) {
+      createData.date_of_birth = new Date(date_of_birth);
     }
-    
-    if (babyBirthDate) {
-      createData.babyBirthDate = new Date(babyBirthDate);
-    }
-
-    if (!createData.pregnancyStatus) {
-      createData.pregnancyStatus = 'Ativa';
-    }
-    createData.EDD = new Date(EDD);
     
     return this.prisma.patient.create({
       data: createData,
       include: {
         doctor: true,
+        pregnancies: true,
+        parities: true,
       },
     });
   }
@@ -37,6 +30,19 @@ export class PatientsService {
     return this.prisma.patient.findMany({
       include: {
         doctor: true,
+        pregnancies: true,
+        parities: true,
+      },
+    });
+  }
+
+  async findByDoctorId(doctorId: number) {
+    return this.prisma.patient.findMany({
+      where: { doctor_id: doctorId },
+      include: {
+        doctor: true,
+        pregnancies: true,
+        parities: true,
       },
     });
   }
@@ -46,69 +52,49 @@ export class PatientsService {
       where: { id },
       include: {
         doctor: true,
+        pregnancies: true,
+        parities: true,
       },
     });
 
     if (!patient) {
-      throw new NotFoundException(`Paciente com o ID ${id} não encontrado`);
+      throw new NotFoundException(`Patient with ID ${id} not found`);
     }
 
     return patient;
   }
 
   async update(id: number, updatePatientDto: UpdatePatientDto) {
-    const patient = await this.prisma.patient.findUnique({
-      where: { id },
-    });
-
-    if (!patient) {
-      throw new NotFoundException(`Paciente com o ID ${id} não encontrado`);
-    }
-
-    const { dateOfBirth, EDD, babyBirthDate, ...rest } = updatePatientDto;
+    const { date_of_birth, ...rest } = updatePatientDto;
+    
     const updateData: any = { ...rest };
-
-    if (dateOfBirth) {
-      updateData.dateOfBirth = new Date(dateOfBirth);
+    
+    if (date_of_birth) {
+      updateData.date_of_birth = new Date(date_of_birth);
     }
 
-    if (babyBirthDate) {
-      updateData.babyBirthDate = new Date(babyBirthDate);
+    try {
+      return await this.prisma.patient.update({
+        where: { id },
+        data: updateData,
+        include: {
+          doctor: true,
+          pregnancies: true,
+          parities: true,
+        },
+      });
+    } catch (error) {
+      throw new NotFoundException(`Patient with ID ${id} not found`);
     }
-
-    if (EDD) {
-      updateData.EDD = new Date(EDD);
-    }
-
-    return this.prisma.patient.update({
-      where: { id },
-      data: updateData,
-      include: {
-        doctor: true,
-      },
-    });
   }
 
   async remove(id: number) {
-    const patient = await this.prisma.patient.findUnique({
-      where: { id },
-    });
-
-    if (!patient) {
-      throw new NotFoundException(`Paciente com o ID ${id} não encontrado`);
+    try {
+      return await this.prisma.patient.delete({
+        where: { id },
+      });
+    } catch (error) {
+      throw new NotFoundException(`Patient with ID ${id} not found`);
     }
-
-    return this.prisma.patient.delete({
-      where: { id },
-    });
-  }
-
-  async findByDoctor(doctorId: number) {
-    return this.prisma.patient.findMany({
-      where: { doctorId },
-      include: {
-        doctor: true,
-      },
-    });
   }
 }
