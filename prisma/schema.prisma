@@ -45,10 +45,10 @@ model Pregnancy {
 model Parity {
   id           Int     @id @default(autoincrement())
   patient_id   Int
-  gestations   Int
-  births_vaginal Int
-  births_cesarean Int
-  abortions    Int
+  gestations   Int?
+  births_vaginal Int?
+  births_cesarean Int?
+  abortions    Int?
   patient      Patient @relation(fields: [patient_id], references: [id])
 }
 
