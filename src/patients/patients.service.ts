@@ -9,13 +9,13 @@ export class PatientsService {
 
   async create(createPatientDto: CreatePatientDto) {
     const { date_of_birth, ...rest } = createPatientDto;
-    
+
     const createData: any = { ...rest };
-    
+
     if (date_of_birth) {
       createData.date_of_birth = new Date(date_of_birth);
     }
-    
+
     return this.prisma.patient.create({
       data: createData,
       include: {
@@ -66,9 +66,9 @@ export class PatientsService {
 
   async update(id: number, updatePatientDto: UpdatePatientDto) {
     const { date_of_birth, ...rest } = updatePatientDto;
-    
+
     const updateData: any = { ...rest };
-    
+
     if (date_of_birth) {
       updateData.date_of_birth = new Date(date_of_birth);
     }

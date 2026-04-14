@@ -1,5 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UsePipes, ValidationPipe, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  UsePipes,
+  ValidationPipe,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+} from '@nestjs/swagger';
 import { DoctorsService } from './doctors.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
@@ -13,7 +32,8 @@ export class DoctorsController {
 
   @ApiOperation({
     summary: 'Registrar novo médico',
-    description: 'Cria um novo médico no sistema. A senha é automaticamente criptografada com bcrypt. Endpoint público para registro inicial.'
+    description:
+      'Cria um novo médico no sistema. A senha é automaticamente criptografada com bcrypt. Endpoint público para registro inicial.',
   })
   @ApiBody({
     type: CreateDoctorDto,
@@ -25,8 +45,8 @@ export class DoctorsController {
           name: 'Dr. João',
           surname: 'Silva',
           email: 'joao.silva@email.com',
-          password: '123456789'
-        }
+          password: '123456789',
+        },
       },
       minimal: {
         summary: 'Médico básico',
@@ -34,10 +54,10 @@ export class DoctorsController {
         value: {
           name: 'Dr. Carlos',
           email: 'carlos@email.com',
-          password: '123456789'
-        }
-      }
-    }
+          password: '123456789',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 201,
@@ -46,16 +66,16 @@ export class DoctorsController {
       id: 1,
       name: 'Dr. João',
       surname: 'Silva',
-      email: 'joao.silva@email.com'
-    }
+      email: 'joao.silva@email.com',
+    },
   })
   @ApiResponse({
     status: 400,
     description: 'Dados inválidos ou email já existe',
     example: {
       statusCode: 400,
-      message: 'Email já está em uso'
-    }
+      message: 'Email já está em uso',
+    },
   })
   @Post()
   create(@Body() createDoctorDto: CreateDoctorDto) {
@@ -64,20 +84,23 @@ export class DoctorsController {
 
   @ApiOperation({
     summary: 'Listar todos os médicos',
-    description: 'Retorna lista completa de médicos com seus pacientes e notificações'
+    description:
+      'Retorna lista completa de médicos com seus pacientes e notificações',
   })
   @ApiBearerAuth('JWT-auth')
   @ApiResponse({
     status: 200,
     description: 'Lista de médicos',
-    example: [{
-      id: 1,
-      name: 'Dr. João',
-      surname: 'Silva',
-      email: 'joao.silva@email.com',
-      patients: [],
-      notifications: []
-    }]
+    example: [
+      {
+        id: 1,
+        name: 'Dr. João',
+        surname: 'Silva',
+        email: 'joao.silva@email.com',
+        patients: [],
+        notifications: [],
+      },
+    ],
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @UseGuards(JwtAuthGuard)
@@ -88,7 +111,8 @@ export class DoctorsController {
 
   @ApiOperation({
     summary: 'Buscar médico por ID',
-    description: 'Retorna um médico específico com seus pacientes e notificações'
+    description:
+      'Retorna um médico específico com seus pacientes e notificações',
   })
   @ApiBearerAuth('JWT-auth')
   @ApiParam({ name: 'id', description: 'ID do médico', example: 1 })
@@ -101,8 +125,8 @@ export class DoctorsController {
       surname: 'Silva',
       email: 'joao.silva@email.com',
       patients: [],
-      notifications: []
-    }
+      notifications: [],
+    },
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @ApiResponse({ status: 404, description: 'Médico não encontrado' })
@@ -114,7 +138,8 @@ export class DoctorsController {
 
   @ApiOperation({
     summary: 'Atualizar médico',
-    description: 'Atualiza dados de um médico. Se a senha for fornecida, será criptografada automaticamente.'
+    description:
+      'Atualiza dados de um médico. Se a senha for fornecida, será criptografada automaticamente.',
   })
   @ApiBearerAuth('JWT-auth')
   @ApiParam({ name: 'id', description: 'ID do médico', example: 1 })
@@ -125,8 +150,8 @@ export class DoctorsController {
         summary: 'Atualização parcial',
         description: 'Exemplo atualizando apenas nome',
         value: {
-          name: 'Dr. João Carlos'
-        }
+          name: 'Dr. João Carlos',
+        },
       },
       complete: {
         summary: 'Atualização completa',
@@ -134,10 +159,10 @@ export class DoctorsController {
         value: {
           name: 'Dr. João Carlos',
           surname: 'Silva Santos',
-          email: 'joao.carlos@email.com'
-        }
-      }
-    }
+          email: 'joao.carlos@email.com',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 200,
@@ -146,20 +171,23 @@ export class DoctorsController {
       id: 1,
       name: 'Dr. João Carlos',
       surname: 'Silva Santos',
-      email: 'joao.carlos@email.com'
-    }
+      email: 'joao.carlos@email.com',
+    },
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @ApiResponse({ status: 404, description: 'Médico não encontrado' })
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateDoctorDto: UpdateDoctorDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateDoctorDto: UpdateDoctorDto,
+  ) {
     return this.doctorsService.update(id, updateDoctorDto);
   }
 
   @ApiOperation({
     summary: 'Deletar médico',
-    description: 'Remove um médico do sistema permanentemente'
+    description: 'Remove um médico do sistema permanentemente',
   })
   @ApiBearerAuth('JWT-auth')
   @ApiParam({ name: 'id', description: 'ID do médico', example: 1 })
@@ -170,8 +198,8 @@ export class DoctorsController {
       id: 1,
       name: 'Dr. João',
       surname: 'Silva',
-      email: 'joao.silva@email.com'
-    }
+      email: 'joao.silva@email.com',
+    },
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @ApiResponse({ status: 404, description: 'Médico não encontrado' })

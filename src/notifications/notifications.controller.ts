@@ -1,11 +1,19 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
-import { NotificationsService } from "./notifications.service";
-import { UpdateNotificationDto } from "./dto/update-notifications.dto";
-import { CreateNotificationDto } from "./dto/create-notifications.dto";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import { NotificationsService } from './notifications.service';
+import { UpdateNotificationDto } from './dto/update-notifications.dto';
+import { CreateNotificationDto } from './dto/create-notifications.dto';
 
 @Controller('notifications')
 export class NotificationsController {
-
   constructor(private readonly notificationsService: NotificationsService) {}
 
   @Get()
@@ -24,7 +32,10 @@ export class NotificationsController {
   }
 
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateNotificationDto: UpdateNotificationDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateNotificationDto: UpdateNotificationDto,
+  ) {
     return this.notificationsService.update(id, updateNotificationDto);
   }
 

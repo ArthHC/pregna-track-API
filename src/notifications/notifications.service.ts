@@ -1,14 +1,14 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { CreateNotificationDto } from "./dto/create-notifications.dto";
-import { UpdateNotificationDto } from "./dto/update-notifications.dto";
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateNotificationDto } from './dto/create-notifications.dto';
+import { UpdateNotificationDto } from './dto/update-notifications.dto';
 
 @Injectable()
 export class NotificationsService {
   constructor(private prisma: PrismaService) {}
 
   async create(createNotificationDto: CreateNotificationDto) {
-    const {date, ...rest} = createNotificationDto;
+    const { date, ...rest } = createNotificationDto;
     const createData: any = { ...rest };
 
     if (date) {
@@ -33,7 +33,7 @@ export class NotificationsService {
   }
 
   async update(id: number, updateNotificationDto: UpdateNotificationDto) {
-    const {date, ...rest} = updateNotificationDto;
+    const { date, ...rest } = updateNotificationDto;
     const updateData: any = { ...rest };
 
     if (date) {

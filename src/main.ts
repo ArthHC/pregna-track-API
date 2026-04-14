@@ -5,15 +5,17 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
-  app.useGlobalPipes(new ValidationPipe({
-    transform: true,
-    whitelist: true,
-    forbidNonWhitelisted: true,
-  }));
-  
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+
   app.enableCors();
-  
+
   const config = new DocumentBuilder()
     .setTitle('PregnaTrack API')
     .setVersion('1.0.0')
@@ -26,7 +28,7 @@ async function bootstrap() {
         description: 'Insira o token JWT retornado pelo login',
         in: 'header',
       },
-      'JWT-auth'
+      'JWT-auth',
     )
     .addTag('🔐 Autenticação', 'Endpoints para login e verificação de perfil')
     .addTag('👨‍⚕️ Doctors', 'CRUD completo de médicos')
@@ -52,9 +54,9 @@ async function bootstrap() {
       showCommonExtensions: true,
     },
   });
-  
+
   console.log('📚 Swagger docs available at: http://localhost:3000/api');
-  
+
   await app.listen(3000);
 }
 bootstrap();

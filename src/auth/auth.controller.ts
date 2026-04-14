@@ -1,5 +1,21 @@
-import { Controller, Post, UseGuards, Request, Body, Get, ValidationPipe, UsePipes, Patch } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import {
+  Controller,
+  Post,
+  UseGuards,
+  Request,
+  Body,
+  Get,
+  ValidationPipe,
+  UsePipes,
+  Patch,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
@@ -14,7 +30,8 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'Login do médico',
-    description: 'Autentica um médico com email e senha, retornando um token JWT válido por 24h'
+    description:
+      'Autentica um médico com email e senha, retornando um token JWT válido por 24h',
   })
   @ApiBody({
     type: LoginDto,
@@ -25,10 +42,10 @@ export class AuthController {
         description: 'Exemplo de login com credenciais válidas',
         value: {
           email: 'joao.silva@email.com',
-          password: '123456789'
-        }
-      }
-    }
+          password: '123456789',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 200,
@@ -39,17 +56,17 @@ export class AuthController {
         id: 1,
         email: 'joao.silva@email.com',
         name: 'Dr. João',
-        surname: 'Silva'
-      }
-    }
+        surname: 'Silva',
+      },
+    },
   })
   @ApiResponse({
     status: 401,
     description: 'Credenciais inválidas',
     example: {
       statusCode: 401,
-      message: 'Credenciais inválidas'
-    }
+      message: 'Credenciais inválidas',
+    },
   })
   @ApiResponse({
     status: 400,
@@ -57,18 +74,19 @@ export class AuthController {
     example: {
       statusCode: 400,
       message: ['email must be an email', 'password should not be empty'],
-      error: 'Bad Request'
-    }
+      error: 'Bad Request',
+    },
   })
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Request() req, @Body() loginDto: LoginDto) {
-    return this.authService.login(req.user);
+    return this.authService.login(loginDto);
   }
 
   @ApiOperation({
     summary: 'Perfil do médico autenticado',
-    description: 'Retorna informações do médico atualmente logado baseado no token JWT'
+    description:
+      'Retorna informações do médico atualmente logado baseado no token JWT',
   })
   @ApiBearerAuth('JWT-auth')
   @ApiResponse({
@@ -77,16 +95,16 @@ export class AuthController {
     example: {
       id: 1,
       email: 'joao.silva@email.com',
-      name: 'Dr. João'
-    }
+      name: 'Dr. João',
+    },
   })
   @ApiResponse({
     status: 401,
     description: 'Token JWT inválido ou expirado',
     example: {
       statusCode: 401,
-      message: 'Unauthorized'
-    }
+      message: 'Unauthorized',
+    },
   })
   @UseGuards(AuthGuard('jwt'))
   @Get('profile')
@@ -96,7 +114,7 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'Renovar token JWT',
-    description: 'Renova um token JWT expirado ou próximo do vencimento'
+    description: 'Renova um token JWT expirado ou próximo do vencimento',
   })
   @ApiBody({
     type: RefreshTokenDto,
@@ -106,10 +124,10 @@ export class AuthController {
         summary: 'Renovar token',
         description: 'Exemplo de renovação de token',
         value: {
-          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
-        }
-      }
-    }
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 200,
@@ -120,17 +138,17 @@ export class AuthController {
         id: 1,
         email: 'joao.silva@email.com',
         name: 'Dr. João',
-        surname: 'Silva'
-      }
-    }
+        surname: 'Silva',
+      },
+    },
   })
   @ApiResponse({
     status: 401,
     description: 'Token inválido ou não renovável',
     example: {
       statusCode: 401,
-      message: 'Não foi possível renovar o token'
-    }
+      message: 'Não foi possível renovar o token',
+    },
   })
   @Post('refresh')
   async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
@@ -139,7 +157,7 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'Buscar dados do médico logado',
-    description: 'Retorna dados completos do médico atualmente autenticado'
+    description: 'Retorna dados completos do médico atualmente autenticado',
   })
   @ApiBearerAuth('JWT-auth')
   @ApiResponse({
@@ -151,16 +169,16 @@ export class AuthController {
       surname: 'Silva',
       email: 'joao.silva@email.com',
       dateOfBirth: '1985-03-15T00:00:00.000Z',
-      parity: null
-    }
+      parity: null,
+    },
   })
   @ApiResponse({
     status: 401,
     description: 'Token JWT inválido',
     example: {
       statusCode: 401,
-      message: 'Unauthorized'
-    }
+      message: 'Unauthorized',
+    },
   })
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
@@ -170,7 +188,8 @@ export class AuthController {
 
   @ApiOperation({
     summary: 'Alterar senha do médico',
-    description: 'Permite ao médico alterar sua senha fornecendo a senha atual e uma nova senha'
+    description:
+      'Permite ao médico alterar sua senha fornecendo a senha atual e uma nova senha',
   })
   @ApiBearerAuth('JWT-auth')
   @ApiBody({
@@ -182,38 +201,41 @@ export class AuthController {
         description: 'Exemplo de alteração de senha',
         value: {
           currentPassword: 'senhaAtual123',
-          newPassword: 'novaSenha456'
-        }
-      }
-    }
+          newPassword: 'novaSenha456',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 200,
     description: 'Senha alterada com sucesso',
     example: {
       message: 'Senha alterada com sucesso',
-      timestamp: '2025-10-20T14:30:00.000Z'
-    }
+      timestamp: '2025-10-20T14:30:00.000Z',
+    },
   })
   @ApiResponse({
     status: 400,
     description: 'Senha atual incorreta ou nova senha inválida',
     example: {
       statusCode: 400,
-      message: 'Senha atual incorreta'
-    }
+      message: 'Senha atual incorreta',
+    },
   })
   @ApiResponse({
     status: 401,
     description: 'Token JWT inválido',
     example: {
       statusCode: 401,
-      message: 'Unauthorized'
-    }
+      message: 'Unauthorized',
+    },
   })
   @UseGuards(AuthGuard('jwt'))
   @Patch('change-password')
-  async changePassword(@Request() req, @Body() changePasswordDto: ChangePasswordDto) {
+  async changePassword(
+    @Request() req,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ) {
     return this.authService.changePassword(req.user.sub, changePasswordDto);
   }
 }

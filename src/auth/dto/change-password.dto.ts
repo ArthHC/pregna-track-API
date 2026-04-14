@@ -5,7 +5,7 @@ export class ChangePasswordDto {
   @ApiProperty({
     description: 'Senha atual do médico',
     example: 'senhaAtual123',
-    minLength: 6
+    minLength: 6,
   })
   @IsNotEmpty()
   @IsString()
@@ -15,7 +15,7 @@ export class ChangePasswordDto {
   @ApiProperty({
     description: 'Nova senha do médico',
     example: 'novaSenha456',
-    minLength: 6
+    minLength: 6,
   })
   @IsNotEmpty()
   @IsString()

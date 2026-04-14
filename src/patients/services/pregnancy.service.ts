@@ -9,11 +9,11 @@ export class PregnancyService {
 
   async create(createPregnancyDto: CreatePregnancyDto) {
     const { edd, baby_birth_date, ...rest } = createPregnancyDto;
-    
+
     const createData: any = { ...rest };
-    
+
     createData.edd = new Date(edd);
-    
+
     if (baby_birth_date) {
       createData.baby_birth_date = new Date(baby_birth_date);
     }
@@ -21,7 +21,7 @@ export class PregnancyService {
     if (!createData.status) {
       createData.status = 'Em acompanhamento';
     }
-    
+
     return this.prisma.pregnancy.create({
       data: createData,
       include: {
@@ -80,13 +80,13 @@ export class PregnancyService {
 
   async update(id: number, updatePregnancyDto: UpdatePregnancyDto) {
     const { edd, baby_birth_date, ...rest } = updatePregnancyDto;
-    
+
     const updateData: any = { ...rest };
-    
+
     if (edd) {
       updateData.edd = new Date(edd);
     }
-    
+
     if (baby_birth_date) {
       updateData.baby_birth_date = new Date(baby_birth_date);
     }

@@ -1,5 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UsePipes, ValidationPipe, Query, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  UsePipes,
+  ValidationPipe,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
 import { UpdatePatientDto } from './dto/update-patient.dto';
@@ -15,7 +36,8 @@ export class PatientsController {
 
   @ApiOperation({
     summary: 'Criar nova paciente',
-    description: 'Cadastra uma nova paciente no sistema. Apenas dados básicos da paciente.'
+    description:
+      'Cadastra uma nova paciente no sistema. Apenas dados básicos da paciente.',
   })
   @ApiBody({
     type: CreatePatientDto,
@@ -28,18 +50,18 @@ export class PatientsController {
           name: 'Maria Santos',
           date_of_birth: '1990-05-15',
           phone_number: '11999888777',
-          badge_color: '#FF5733'
-        }
+          badge_color: '#FF5733',
+        },
       },
       minimal: {
         summary: 'Paciente básica',
         description: 'Exemplo com apenas campos obrigatórios',
         value: {
           doctor_id: 1,
-          name: 'Ana Silva'
-        }
-      }
-    }
+          name: 'Ana Silva',
+        },
+      },
+    },
   })
   @ApiResponse({
     status: 201,
@@ -54,11 +76,11 @@ export class PatientsController {
       doctor: {
         id: 1,
         name: 'Dr. João',
-        email: 'joao@email.com'
+        email: 'joao@email.com',
       },
       pregnancies: [],
-      parities: []
-    }
+      parities: [],
+    },
   })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
@@ -69,31 +91,33 @@ export class PatientsController {
 
   @ApiOperation({
     summary: 'Listar pacientes',
-    description: 'Lista todas as pacientes ou filtra por médico específico'
+    description: 'Lista todas as pacientes ou filtra por médico específico',
   })
   @ApiQuery({
     name: 'doctorId',
     required: false,
     description: 'ID do médico para filtrar pacientes',
-    example: 1
+    example: 1,
   })
   @ApiResponse({
     status: 200,
     description: 'Lista de pacientes',
-    example: [{
-      id: 1,
-      doctor_id: 1,
-      name: 'Maria Santos',
-      date_of_birth: '1990-05-15T00:00:00.000Z',
-      phone_number: '11999888777',
-      badge_color: '#FF5733',
-      doctor: {
+    example: [
+      {
         id: 1,
-        name: 'Dr. João'
+        doctor_id: 1,
+        name: 'Maria Santos',
+        date_of_birth: '1990-05-15T00:00:00.000Z',
+        phone_number: '11999888777',
+        badge_color: '#FF5733',
+        doctor: {
+          id: 1,
+          name: 'Dr. João',
+        },
+        pregnancies: [],
+        parities: [],
       },
-      pregnancies: [],
-      parities: []
-    }]
+    ],
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @Get()
@@ -106,7 +130,8 @@ export class PatientsController {
 
   @ApiOperation({
     summary: 'Buscar paciente por ID',
-    description: 'Retorna dados completos de uma paciente específica incluindo gestações e paridades'
+    description:
+      'Retorna dados completos de uma paciente específica incluindo gestações e paridades',
   })
   @ApiParam({ name: 'id', description: 'ID da paciente', example: 1 })
   @ApiResponse({
@@ -122,15 +147,15 @@ export class PatientsController {
       doctor: {
         id: 1,
         name: 'Dr. João',
-        email: 'joao@email.com'
+        email: 'joao@email.com',
       },
       pregnancies: [
         {
           id: 1,
           baby_name: 'Pedro',
           edd: '2025-06-01T00:00:00.000Z',
-          status: 'Em acompanhamento'
-        }
+          status: 'Em acompanhamento',
+        },
       ],
       parities: [
         {
@@ -138,10 +163,10 @@ export class PatientsController {
           gestations: 1,
           births_vaginal: 0,
           births_cesarean: 0,
-          abortions: 0
-        }
-      ]
-    }
+          abortions: 0,
+        },
+      ],
+    },
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @ApiResponse({ status: 404, description: 'Paciente não encontrada' })
@@ -152,28 +177,33 @@ export class PatientsController {
 
   @ApiOperation({
     summary: 'Atualizar paciente',
-    description: 'Atualiza dados básicos de uma paciente (não inclui dados de gestação ou paridade)'
+    description:
+      'Atualiza dados básicos de uma paciente (não inclui dados de gestação ou paridade)',
   })
   @ApiParam({ name: 'id', description: 'ID da paciente', example: 1 })
   @ApiResponse({
     status: 200,
-    description: 'Paciente atualizada com sucesso'
+    description: 'Paciente atualizada com sucesso',
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @ApiResponse({ status: 404, description: 'Paciente não encontrada' })
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updatePatientDto: UpdatePatientDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePatientDto: UpdatePatientDto,
+  ) {
     return this.patientsService.update(id, updatePatientDto);
   }
 
   @ApiOperation({
     summary: 'Deletar paciente',
-    description: 'Remove uma paciente do sistema (cascade: remove gestações e paridades associadas)'
+    description:
+      'Remove uma paciente do sistema (cascade: remove gestações e paridades associadas)',
   })
   @ApiParam({ name: 'id', description: 'ID da paciente', example: 1 })
   @ApiResponse({
     status: 200,
-    description: 'Paciente deletada com sucesso'
+    description: 'Paciente deletada com sucesso',
   })
   @ApiResponse({ status: 401, description: 'Token JWT inválido' })
   @ApiResponse({ status: 404, description: 'Paciente não encontrada' })

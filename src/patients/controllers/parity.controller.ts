@@ -1,9 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  UseGuards,
+} from '@nestjs/common';
 import { ParityService } from '../services/parity.service';
 import { CreateParityDto } from '../dto/create-parity.dto';
 import { UpdateParityDto } from '../dto/update-parity.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { ApiTags, ApiBearerAuth, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+} from '@nestjs/swagger';
 
 @ApiTags('👶 Parity')
 @ApiBearerAuth('JWT-auth')
@@ -14,7 +30,7 @@ export class ParityController {
 
   @ApiOperation({
     summary: 'Registrar paridade',
-    description: 'Registra informações de paridade para uma paciente'
+    description: 'Registra informações de paridade para uma paciente',
   })
   @Post()
   create(@Body() createParityDto: CreateParityDto) {
@@ -23,7 +39,7 @@ export class ParityController {
 
   @ApiOperation({
     summary: 'Listar todas as paridades',
-    description: 'Retorna lista de todas as paridades'
+    description: 'Retorna lista de todas as paridades',
   })
   @Get()
   findAll() {
@@ -32,7 +48,7 @@ export class ParityController {
 
   @ApiOperation({
     summary: 'Buscar paridade por paciente',
-    description: 'Retorna paridades de uma paciente específica'
+    description: 'Retorna paridades de uma paciente específica',
   })
   @ApiParam({ name: 'patientId', description: 'ID da paciente' })
   @Get('patient/:patientId')
@@ -42,7 +58,7 @@ export class ParityController {
 
   @ApiOperation({
     summary: 'Buscar paridade por ID',
-    description: 'Retorna dados de uma paridade específica'
+    description: 'Retorna dados de uma paridade específica',
   })
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
@@ -51,16 +67,19 @@ export class ParityController {
 
   @ApiOperation({
     summary: 'Atualizar paridade',
-    description: 'Atualiza dados de paridade'
+    description: 'Atualiza dados de paridade',
   })
   @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateParityDto: UpdateParityDto) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateParityDto: UpdateParityDto,
+  ) {
     return this.parityService.update(id, updateParityDto);
   }
 
   @ApiOperation({
     summary: 'Deletar paridade',
-    description: 'Remove uma paridade do sistema'
+    description: 'Remove uma paridade do sistema',
   })
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {

@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateParityDto {
   @ApiProperty({
     description: 'ID da paciente',
-    example: 1
+    example: 1,
   })
   @IsNotEmpty()
   @IsInt()
@@ -13,7 +13,7 @@ export class CreateParityDto {
   @ApiProperty({
     description: 'Número de gestações',
     example: 1,
-    minimum: 0
+    minimum: 0,
   })
   @IsNotEmpty()
   @IsInt()
@@ -23,7 +23,7 @@ export class CreateParityDto {
   @ApiProperty({
     description: 'Número de partos vaginais',
     example: 0,
-    minimum: 0
+    minimum: 0,
   })
   @IsNotEmpty()
   @IsInt()
@@ -33,7 +33,7 @@ export class CreateParityDto {
   @ApiProperty({
     description: 'Número de partos cesáreas',
     example: 0,
-    minimum: 0
+    minimum: 0,
   })
   @IsNotEmpty()
   @IsInt()
@@ -43,7 +43,7 @@ export class CreateParityDto {
   @ApiProperty({
     description: 'Número de abortos',
     example: 0,
-    minimum: 0
+    minimum: 0,
   })
   @IsNotEmpty()
   @IsInt()

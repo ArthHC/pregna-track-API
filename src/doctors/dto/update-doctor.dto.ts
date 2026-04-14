@@ -1,13 +1,19 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateDoctorDto } from './create-doctor.dto';
-import { IsEmail, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsOptional,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdateDoctorDto extends PartialType(CreateDoctorDto) {
   @ApiPropertyOptional({
     description: 'Nome do médico',
     example: 'Dr. João Carlos',
-    maxLength: 45
+    maxLength: 45,
   })
   @IsOptional()
   @IsString()
@@ -17,7 +23,7 @@ export class UpdateDoctorDto extends PartialType(CreateDoctorDto) {
   @ApiPropertyOptional({
     description: 'Sobrenome do médico',
     example: 'Silva Santos',
-    maxLength: 255
+    maxLength: 255,
   })
   @IsOptional()
   @IsString()
@@ -28,7 +34,7 @@ export class UpdateDoctorDto extends PartialType(CreateDoctorDto) {
     description: 'Email do médico',
     example: 'joao.carlos@email.com',
     format: 'email',
-    maxLength: 320
+    maxLength: 320,
   })
   @IsOptional()
   @IsEmail()
@@ -39,7 +45,7 @@ export class UpdateDoctorDto extends PartialType(CreateDoctorDto) {
     description: 'Nova senha (será criptografada automaticamente)',
     example: 'novasenha123',
     minLength: 6,
-    maxLength: 255
+    maxLength: 255,
   })
   @IsOptional()
   @IsString()

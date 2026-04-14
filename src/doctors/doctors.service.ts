@@ -10,7 +10,7 @@ export class DoctorsService {
 
   async create(createDoctorDto: CreateDoctorDto) {
     const hashedPassword = await bcrypt.hash(createDoctorDto.password, 10);
-    
+
     return this.prisma.doctor.create({
       data: {
         ...createDoctorDto,
@@ -54,7 +54,7 @@ export class DoctorsService {
     }
 
     const updateData = { ...updateDoctorDto };
-    
+
     if (updateDoctorDto.password) {
       updateData.password = await bcrypt.hash(updateDoctorDto.password, 10);
     }

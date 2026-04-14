@@ -1,10 +1,17 @@
-import { IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import {
+  IsDateString,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreatePatientDto {
   @ApiProperty({
     description: 'ID do médico responsável',
-    example: 1
+    example: 1,
   })
   @IsNotEmpty()
   @IsInt()
@@ -13,7 +20,7 @@ export class CreatePatientDto {
   @ApiProperty({
     description: 'Nome da paciente',
     example: 'Maria',
-    maxLength: 255
+    maxLength: 255,
   })
   @IsNotEmpty()
   @IsString()
@@ -23,7 +30,7 @@ export class CreatePatientDto {
   @ApiPropertyOptional({
     description: 'Data de nascimento da paciente (opcional)',
     example: '1990-05-15',
-    format: 'date'
+    format: 'date',
   })
   @IsOptional()
   @IsDateString()
@@ -32,7 +39,7 @@ export class CreatePatientDto {
   @ApiPropertyOptional({
     description: 'Número de telefone da paciente (opcional)',
     example: '11999888777',
-    maxLength: 20
+    maxLength: 20,
   })
   @IsOptional()
   @IsString()
@@ -43,7 +50,7 @@ export class CreatePatientDto {
     description: 'Cor de identificação em hexadecimal (opcional)',
     example: '#FF5733',
     maxLength: 7,
-    pattern: '^#[A-Fa-f0-9]{6}$'
+    pattern: '^#[A-Fa-f0-9]{6}$',
   })
   @IsOptional()
   @IsString()

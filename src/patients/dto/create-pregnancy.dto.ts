@@ -1,10 +1,18 @@
-import { IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, Min } from 'class-validator';
+import {
+  IsDateString,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  Min,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreatePregnancyDto {
   @ApiProperty({
     description: 'ID da paciente',
-    example: 1
+    example: 1,
   })
   @IsNotEmpty()
   @IsInt()
@@ -13,7 +21,7 @@ export class CreatePregnancyDto {
   @ApiPropertyOptional({
     description: 'Nome do bebê (opcional)',
     example: 'Pedro',
-    maxLength: 255
+    maxLength: 255,
   })
   @IsOptional()
   @IsString()
@@ -23,7 +31,7 @@ export class CreatePregnancyDto {
   @ApiProperty({
     description: 'Data Provável do Parto (Expected Delivery Date)',
     example: '2025-06-01',
-    format: 'date'
+    format: 'date',
   })
   @IsNotEmpty()
   @IsDateString()
@@ -32,7 +40,7 @@ export class CreatePregnancyDto {
   @ApiPropertyOptional({
     description: 'Status da gravidez',
     example: 'Em acompanhamento',
-    default: 'Em acompanhamento'
+    default: 'Em acompanhamento',
   })
   @IsOptional()
   @IsString()
@@ -41,7 +49,7 @@ export class CreatePregnancyDto {
   @ApiProperty({
     description: 'Dias de assistência antes da data provável',
     example: 30,
-    minimum: 0
+    minimum: 0,
   })
   @IsNotEmpty()
   @IsInt()
@@ -51,7 +59,7 @@ export class CreatePregnancyDto {
   @ApiProperty({
     description: 'Dias de assistência após a data provável',
     example: 15,
-    minimum: 0
+    minimum: 0,
   })
   @IsNotEmpty()
   @IsInt()
@@ -61,7 +69,7 @@ export class CreatePregnancyDto {
   @ApiPropertyOptional({
     description: 'Data de nascimento do bebê (opcional)',
     example: '2025-06-01',
-    format: 'date'
+    format: 'date',
   })
   @IsOptional()
   @IsDateString()
@@ -69,7 +77,7 @@ export class CreatePregnancyDto {
 
   @ApiPropertyOptional({
     description: 'Observações sobre a gestação (opcional)',
-    example: 'Primeira gestação, sem complicações'
+    example: 'Primeira gestação, sem complicações',
   })
   @IsOptional()
   @IsString()

@@ -6,6 +6,12 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [PrismaModule, DoctorsModule, PatientsModule, NotificationsModule, AuthModule],
+  imports: [
+    PrismaModule,
+    DoctorsModule,
+    PatientsModule,
+    NotificationsModule,
+    AuthModule,
+  ],
 })
 export class AppModule {}
